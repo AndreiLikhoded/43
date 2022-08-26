@@ -95,10 +95,12 @@ public class Main {
                 String method = exchange.getRequestMethod();
                 URI uri = exchange.getRequestURI();
                 String ctxPath = exchange.getHttpContext().getPath();
+                String method1 = String.valueOf(exchange.getResponseHeaders());
 
                 write(writer, "HTTP method", method);
                 write(writer, "Query", uri.toString());
                 write(writer, "Make through", ctxPath);
+                write(writer, "", method1);
                 writeHeaders(writer, "Queries", exchange.getRequestHeaders());
                 writeData(writer, exchange);
                 writer.flush();
