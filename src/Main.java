@@ -32,7 +32,7 @@ public class Main {
 
     private static void initRoutes(HttpServer server){
         server.createContext("/", Main::handleRequest);
-        server.createContext("/apps/", Main::anotherHandleRequest);
+        server.createContext("/apps/", Main::handleRequestForApps);
         server.createContext("/apps/profile", Main::handleRequestForProfile);
     }
 
@@ -60,21 +60,23 @@ public class Main {
         }
     }
 
-    private static void anotherHandleRequest(HttpExchange exchange){
+    private static void handleRequestForApps(HttpExchange exchange){
         try{
-            exchange.getRequestHeaders().add("Content-Type", "html/css; charset=utf-8");
-            int response = 100;
-            int length = 20;
+            exchange.getResponseHeaders().add("Content-Type", "html/css; charset=utf-8");
+            int response = 200;
+            int length = 0;
             exchange.sendResponseHeaders(response, length);
 
             try(PrintWriter writer = getWriterFrom(exchange)){
                 String method = exchange.getRequestMethod();
                 URI uri = exchange.getRequestURI();
                 String ctxPath = exchange.getHttpContext().getPath();
+                String address = String.valueOf(exchange.getResponseCode());
 
                 write(writer, "HTTP method", method);
-                write(writer, "Query", uri.toString());
-                write(writer, "Done through", ctxPath);
+                write(writer, "Query information", uri.toString());
+                write(writer, "Make through", ctxPath);
+                write(writer, "Address", address);
                 writeHeaders(writer, "Queries", exchange.getRequestHeaders());
                 writeData(writer, exchange);
                 writer.flush();
@@ -99,7 +101,7 @@ public class Main {
 
                 write(writer, "HTTP method", method);
                 write(writer, "Query", uri.toString());
-                write(writer, "Make through", ctxPath);
+                write(writer, "Done through", ctxPath);
                 write(writer, "HTTP profile", method1);
                 writeHeaders(writer, "Queries", exchange.getRequestHeaders());
                 writeData(writer, exchange);
