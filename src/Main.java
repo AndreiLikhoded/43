@@ -100,7 +100,7 @@ public class Main {
                 write(writer, "HTTP method", method);
                 write(writer, "Query", uri.toString());
                 write(writer, "Make through", ctxPath);
-                write(writer, "", method1);
+                write(writer, "HTTP profile", method1);
                 writeHeaders(writer, "Queries", exchange.getRequestHeaders());
                 writeData(writer, exchange);
                 writer.flush();
